@@ -1,0 +1,589 @@
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Arial, sans-serif;
+    background: linear-gradient(135deg, #153b59, #356b83);
+    color: white;
+    text-align: center;
+}
+
+.game-container {
+    width: 90%;
+    max-width: 650px;
+    padding: 45px 25px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 24px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+h1 {
+    color: #ffd166;
+    font-size: 36px;
+}
+
+h2 {
+    color: #ffffff;
+}
+
+p {
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+.score {
+    color: #ffd166;
+    font-weight: bold;
+}
+
+button {
+    background: #ffb703;
+    color: #202020;
+    border: none;
+    border-radius: 12px;
+    padding: 15px 35px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 15px;
+}
+
+button:hover {
+    background: #ffd166;
+    transform: scale(1.05);
+}
+
+/* แผนที่เขาวงกต */
+.maze {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    width: 100%;
+    max-width: 420px;
+    margin: 20px auto;
+    border: 4px solid #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.cell {
+    aspect-ratio: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: clamp(18px, 4vw, 30px);
+}
+
+.wall {
+    background: #354052;
+}
+
+.path {
+    background: #e6f5db;
+}
+
+.exit {
+    background: #ffd166;
+}
+
+.player {
+    background: #8ed081;
+}
+
+.controls button {
+    padding: 10px 18px;
+    margin: 4px;
+    font-size: 22px;
+}
+
+a {
+    color: #ffffff;
+}
+.key {
+    background: #d6b3f8;
+}
+.quiz-box {
+    background: #fff4d6;
+    color: #263238;
+    padding: 20px;
+    border-radius: 15px;
+    margin: 20px auto;
+}
+
+.quiz-box h2 {
+    color: #173b55;
+}
+
+.quiz-box button {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    font-size: 16px;
+    text-align: left;
+}
+.game-message {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: bold;
+    text-align: center;
+    margin: 15px 0;
+}
+
+.win-screen {
+    background: linear-gradient(135deg, #ffcf66, #ff9f43);
+    color: #263238;
+    padding: 25px;
+    margin: 20px auto;
+    border-radius: 20px;
+    border: 4px solid #ffffff;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+.win-screen h1 {
+    color: #754000;
+    font-size: 30px;
+}
+
+.win-screen h2 {
+    color: #263238;
+}
+
+.win-screen p {
+    font-size: 18px;
+}
+
+/* ===== FANTASY RPG THEME ===== */
+
+body {
+    background:
+        radial-gradient(circle at 50% 15%, #263b63 0%, transparent 55%),
+        linear-gradient(135deg, #080d19, #17243d, #090e1b);
+
+    color: #f5e8c8;
+    min-height: 100vh;
+    font-family: "Segoe UI", Tahoma, sans-serif;
+}
+
+/* กรอบหลักของเกม */
+.container {
+    background: linear-gradient(160deg, #1c2942, #101827);
+    border: 2px solid #d9ac56;
+    border-radius: 22px;
+
+    box-shadow:
+        0 0 25px rgba(217, 172, 86, 0.2),
+        0 18px 45px rgba(0, 0, 0, 0.5);
+
+    padding: 30px;
+}
+
+/* หัวข้อเกม */
+h1 {
+    color: #f4cf7a;
+    text-shadow: 0 0 14px rgba(244, 207, 122, 0.35);
+}
+
+/* ข้อความทั่วไป */
+p {
+    line-height: 1.7;
+}
+
+/* กรอบเขาวงกต */
+.maze {
+    background: #111827;
+    border: 3px solid #d9ac56;
+    border-radius: 14px;
+
+    box-shadow:
+        0 0 22px rgba(217, 172, 86, 0.2),
+        inset 0 0 25px rgba(0, 0, 0, 0.4);
+}
+
+/* ===== FANTASY RPG BUTTONS ===== */
+
+button,
+.btn,
+a.button {
+    background: linear-gradient(135deg, #f6d47b, #c88b2e);
+    color: #24190d;
+    border: 2px solid #ffe5a3;
+    border-radius: 12px;
+    padding: 13px 28px;
+    font-weight: bold;
+    font-size: 18px;
+    cursor: pointer;
+
+    box-shadow: 0 5px 0 #80531d,
+                0 0 18px rgba(255, 199, 80, 0.2);
+
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+button:hover,
+.btn:hover,
+a.button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 0 #80531d,
+                0 0 25px rgba(255, 199, 80, 0.45);
+}
+
+button:active,
+.btn:active,
+a.button:active {
+    transform: translateY(2px);
+    box-shadow: 0 2px 0 #80531d;
+}
+
+/* ===== FANTASY RPG MAZE ===== */
+
+/* กำแพงหิน */
+.wall {
+    background: linear-gradient(
+        145deg,
+        #56647a,
+        #293448 65%,
+        #1a2334
+    );
+    box-shadow:
+        inset 2px 2px 0 rgba(255,255,255,0.12),
+        inset -3px -3px 0 rgba(0,0,0,0.45);
+    border: 1px solid #182132;
+}
+
+/* พื้นทางเดิน */
+.path {
+    background: linear-gradient(
+        135deg,
+        #263a39,
+        #344c45
+    );
+    box-shadow: inset 0 0 8px rgba(0,0,0,0.2);
+}
+
+/* ตัวละคร */
+.player {
+    background: radial-gradient(
+        circle,
+        #e7c76f,
+        #9b7139
+    );
+    box-shadow: 0 0 18px rgba(255,211,91,0.6);
+}
+
+/* กุญแจเวทมนตร์ */
+.key {
+    background: radial-gradient(
+        circle,
+        #c59aff,
+        #62419b
+    );
+    box-shadow: 0 0 20px rgba(177,112,255,0.65);
+    animation: magicGlow 1.5s infinite alternate;
+}
+
+/* ประตูทางออก */
+.exit {
+    background: linear-gradient(
+        135deg,
+        #ffd97d,
+        #b97922
+    );
+    box-shadow: 0 0 20px rgba(255,190,65,0.55);
+}
+
+@keyframes magicGlow {
+    from {
+        box-shadow: 0 0 8px rgba(177,112,255,0.35);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(177,112,255,0.9);
+    }
+}
+
+/* ===== FANTASY RPG GAME HUD ===== */
+
+.game-hud {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 10px;
+    margin: 20px auto;
+    max-width: 650px;
+}
+
+.hud-item {
+    background: linear-gradient(145deg, #25334d, #111827);
+    border: 2px solid #d9ac56;
+    border-radius: 12px;
+    padding: 12px 6px;
+    color: #f4cf7a;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.hud-item strong {
+    display: block;
+    margin-top: 8px;
+    color: white;
+    font-size: 17px;
+}
+
+@media (max-width: 600px) {
+    .game-hud {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* ===== FANTASY RPG QUEST PANEL ===== */
+
+.quest-panel {
+    max-width: 650px;
+    margin: 15px auto 25px;
+    padding: 18px 24px;
+
+    background: linear-gradient(135deg, #26324b, #141c2d);
+    border: 2px solid #d9ac56;
+    border-left: 6px solid #f4cf7a;
+    border-radius: 12px;
+
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    text-align: left;
+}
+
+.quest-panel h3 {
+    color: #f4cf7a;
+    font-size: 18px;
+    margin: 0 0 10px;
+    letter-spacing: 1px;
+}
+
+.quest-panel p {
+    color: #f5e8c8;
+    font-size: 16px;
+    margin: 0;
+    line-height: 1.6;
+}
+
+/* ===== FANTASY RPG ANIMATIONS ===== */
+
+/* ตัวละครมีแสงเวทมนตร์ */
+.player {
+    position: relative;
+    animation: heroGlow 2s ease-in-out infinite alternate;
+}
+
+/* กุญแจลอยและเปล่งแสง */
+.key {
+    animation: keyFloat 1.8s ease-in-out infinite;
+}
+
+/* ประตูทางออกเปล่งแสง */
+.exit {
+    animation: exitGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes heroGlow {
+    from {
+        box-shadow: 0 0 8px rgba(255, 210, 90, 0.3);
+    }
+    to {
+        box-shadow: 0 0 24px rgba(255, 210, 90, 0.85);
+    }
+}
+
+@keyframes keyFloat {
+    0%, 100% {
+        transform: translateY(0);
+        box-shadow: 0 0 10px rgba(180, 110, 255, 0.4);
+    }
+    50% {
+        transform: translateY(-3px);
+        box-shadow: 0 0 24px rgba(180, 110, 255, 0.9);
+    }
+}
+
+@keyframes exitGlow {
+    from {
+        box-shadow: 0 0 8px rgba(255, 190, 65, 0.4);
+    }
+    to {
+        box-shadow: 0 0 25px rgba(255, 190, 65, 0.9);
+    }
+}
+
+/* ลดแอนิเมชันสำหรับผู้ที่ตั้งค่าลดการเคลื่อนไหว */
+@media (prefers-reduced-motion: reduce) {
+    .player,
+    .key,
+    .exit {
+        animation: none;
+    }
+}
+
+/* ===== FANTASY RPG QUIZ ===== */
+
+.quiz-box {
+    max-width: 650px;
+    margin: 25px auto;
+    padding: 28px 24px;
+
+    background: linear-gradient(145deg, #25334d, #101827);
+    border: 2px solid #d9ac56;
+    border-radius: 18px;
+
+    box-shadow: 0 0 25px rgba(217, 172, 86, 0.25);
+    text-align: center;
+}
+
+.quiz-box h2 {
+    color: #f4cf7a;
+    font-size: 24px;
+    margin-bottom: 18px;
+}
+
+.quiz-box p {
+    color: #ffffff;
+    font-size: 19px;
+    font-weight: bold;
+    margin-bottom: 22px;
+}
+
+.quiz-box form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.quiz-box button {
+    width: 100%;
+    min-width: 0;
+    padding: 14px 12px;
+
+    background: linear-gradient(145deg, #354565, #1c2942);
+    color: #ffffff;
+    border: 2px solid #b99552;
+    border-radius: 12px;
+
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: none;
+    transition: 0.2s;
+}
+
+.quiz-box button:hover {
+    background: linear-gradient(145deg, #d9ac56, #a7752e);
+    color: #101827;
+    transform: translateY(-3px);
+    box-shadow: 0 0 18px rgba(217, 172, 86, 0.5);
+}
+
+@media (max-width: 500px) {
+    .quiz-box form {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ===== RPG QUIZ BUTTON EFFECT ===== */
+
+.quiz-box button {
+    position: relative;
+    overflow: hidden;
+}
+
+.quiz-box button::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        120deg,
+        transparent 20%,
+        rgba(255, 255, 255, 0.25) 50%,
+        transparent 80%
+    );
+    transform: translateX(-120%);
+    transition: transform 0.45s ease;
+    pointer-events: none;
+}
+
+.quiz-box button:hover::before {
+    transform: translateX(120%);
+}
+
+.quiz-box button:focus-visible {
+    outline: 3px solid #ffe5a3;
+    outline-offset: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .quiz-box button::before {
+        transition: none;
+    }
+}
+
+/* ===== FANTASY RPG VICTORY SCREEN ===== */
+
+.win-screen {
+    max-width: 650px;
+    margin: 30px auto;
+    padding: 35px 25px;
+
+    background: linear-gradient(
+        145deg,
+        #263451,
+        #111827
+    );
+
+    border: 3px solid #f4cf7a;
+    border-radius: 20px;
+
+    box-shadow:
+        0 0 25px rgba(255, 204, 91, 0.35),
+        inset 0 0 35px rgba(255, 204, 91, 0.08);
+
+    text-align: center;
+    animation: victoryAppear 0.8s ease-out;
+}
+
+.win-screen h1 {
+    color: #ffd76a;
+    font-size: clamp(25px, 5vw, 38px);
+    text-shadow: 0 0 18px rgba(255, 215, 106, 0.7);
+}
+
+.win-screen h2 {
+    color: #ffe4a3;
+    margin: 20px 0;
+}
+
+.win-screen p {
+    color: #ffffff;
+    font-size: 18px;
+    line-height: 1.8;
+}
+
+@keyframes victoryAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.96);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .win-screen {
+        animation: none;
+    }
+}
