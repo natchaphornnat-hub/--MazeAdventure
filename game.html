@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Maze Adventure: Fantasy RPG</title>
+<style>
+*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(ellipse at top,#243552,#090f1e 75%);color:#fff4d9;font-family:Tahoma,Arial,sans-serif;text-align:center}
+.game-container{width:min(96%,690px);margin:24px auto;padding:22px 18px;background:linear-gradient(155deg,#263858,#111c31);border:3px solid #d6a74e;border-radius:24px;box-shadow:0 12px 45px #0008}
+h1{color:#ffd278;text-shadow:0 0 15px #f4a53c70;font-size:clamp(24px,5vw,38px);margin:12px 0 22px}
+.game-hud{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.hud-item{padding:13px 5px;border:2px solid #e3b357;border-radius:15px;background:#17233b;font-size:13px;font-weight:bold;color:#ffd278}.hud-item strong{display:block;color:white;font-size:19px;margin-top:10px}
+.quest-panel{margin:18px auto;padding:10px;border:2px solid #d7a64e;border-radius:15px;background:#1a2a44}.quest-panel h3{margin:6px;color:#ffd278}.quest-panel p{margin:10px 0}
+.maze{display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:4px;max-width:490px;margin:22px auto;padding:9px;border:4px solid #c79a4e;border-radius:14px;background:#101a2a}
+.cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:7px;font-size:clamp(20px,5vw,35px)}
+.wall{background:linear-gradient(140deg,#66707a,#354151);box-shadow:inset 0 0 0 2px #7c858d}.path{background:linear-gradient(140deg,#52735d,#304f42)}.player{background:#52735d;filter:drop-shadow(0 0 8px #ffd77c)}.key{background:#54755e;filter:drop-shadow(0 0 7px #ffca36)}.exit{background:#54735c;filter:drop-shadow(0 0 8px #ffd453)}
+button,.home-link{cursor:pointer;border:2px solid #efbd61;background:linear-gradient(#e9bb63,#ad7428);color:#18233b;font-weight:bold;border-radius:12px;padding:12px 18px;margin:6px;font-size:16px;text-decoration:none;display:inline-block}button:hover,.home-link:hover{filter:brightness(1.15)}
+.quiz-box,.win-screen{background:#121e34;border:2px solid #e6b454;border-radius:18px;padding:18px;margin:20px auto;max-width:520px}.quiz-box h2,.win-screen h2{color:#ffd278}.quiz-choices{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.quiz-choices button{font-size:14px;min-height:58px;margin:0}.game-message{color:#ffdc92;font-weight:bold}.win-screen h1{font-size:32px}
+.controls{color:#d6d9e2;font-size:13px}.hidden{display:none!important}
+@media(max-width:480px){.game-container{padding:14px 9px}.game-hud{gap:5px}.hud-item{font-size:10px;padding:9px 2px}.hud-item strong{font-size:14px}.maze{gap:2px;padding:5px}.quiz-choices{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="game-container">
+<h1 id="levelTitle">🗝️ เขาวงกตด่านที่ 1</h1>
+<p id="message" class="game-message" aria-live="polite"></p>
+<div class="game-hud">
+<div class="hud-item">🏰 LEVEL<strong id="levelValue">1 / 3</strong></div>
+<div class="hud-item">⭐ SCORE<strong id="scoreValue">0 / 30</strong></div>
+<div class="hud-item">👣 STEPS<strong id="stepsValue">0</strong></div>
+<div class="hud-item">🔑 KEY<strong id="keyValue">Not Found</strong></div>
+</div>
+<div class="quest-panel"><h3>📜 CURRENT QUEST</h3><p id="questText"></p></div>
+<div id="maze" class="maze" aria-label="แผนที่เขาวงกต"></div>
+<div id="quizBox" class="quiz-box hidden"><h2>❓ คำถามปลดล็อกประตู</h2><p id="questionText"></p><div id="quizChoices" class="quiz-choices"></div></div>
+<div id="winScreen" class="win-screen hidden"><h1>🏆 MISSION COMPLETE!</h1><h2>🎉 ยินดีด้วย! คุณพิชิตเขาวงกตครบ 3 ด่าน</h2><p>คุณผ่านการทดสอบ HTML, CSS และ PHP สำเร็จแล้ว!</p><h2 id="finalScore"></h2><p id="finalSteps"></p><p>🏅 ภารกิจสำเร็จ!</p></div>
+<p class="controls">เดินด้วยปุ่มลูกศร ↑ ↓ ← → หรือ W A S D</p>
+<button id="restartButton" type="button">🔄 เริ่มใหม่</button>
+<a href="index.html" class="home-link">🏠 กลับหน้าหลัก</a>
+</div>
+<script>
+"use strict";
+const questions=[
+{question:"HTML ใช้สำหรับทำอะไร?",choices:{A:"สร้างโครงสร้างเว็บไซต์",B:"ตกแต่งสีเว็บไซต์",C:"จัดการฐานข้อมูล",D:"เปิดเว็บเซิร์ฟเวอร์"},answer:"A"},
+{question:"CSS ใช้สำหรับทำอะไร?",choices:{A:"เชื่อมต่อฐานข้อมูล",B:"ตกแต่งหน้าเว็บไซต์",C:"สร้างเว็บเซิร์ฟเวอร์",D:"ประมวลผล PHP"},answer:"B"},
+{question:"PHP ทำงานที่ส่วนใดเป็นหลัก?",choices:{A:"หน้าจอผู้ใช้",B:"แป้นพิมพ์",C:"ฝั่งเซิร์ฟเวอร์",D:"ไฟล์ CSS"},answer:"C"}
+];
+const mazes={
+1:[[1,1,1,1,1,1,1],[1,0,0,3,1,2,1],[1,0,1,0,1,0,1],[1,0,1,0,0,0,1],[1,0,1,1,1,0,1],[1,0,0,0,0,0,1],[1,1,1,1,1,1,1]],
+2:[[1,1,1,1,1,1,1],[1,0,1,0,0,2,1],[1,0,1,0,1,0,1],[1,0,0,0,1,0,1],[1,1,1,0,1,0,1],[1,3,0,0,0,0,1],[1,1,1,1,1,1,1]],
+3:[[1,1,1,1,1,1,1],[1,0,1,0,0,2,1],[1,0,1,0,1,0,1],[1,0,0,0,1,0,1],[1,1,1,0,1,0,1],[1,0,0,0,0,3,1],[1,1,1,1,1,1,1]]
+};
+const $=id=>document.getElementById(id);
+let state;
+let audioCtx;
+function tone(frequency,duration=0.1,type="sine",volume=0.09,delay=0){
+ try{
+ const AC=window.AudioContext||window.webkitAudioContext;
+ if(!AC)return;
+ audioCtx=audioCtx||new AC();
+ if(audioCtx.state==="suspended")audioCtx.resume();
+ const o=audioCtx.createOscillator(),g=audioCtx.createGain(),t=audioCtx.currentTime+delay;
+ o.type=type;o.frequency.setValueAtTime(frequency,t);
+ g.gain.setValueAtTime(0.0001,t);g.gain.exponentialRampToValueAtTime(volume,t+0.012);g.gain.exponentialRampToValueAtTime(0.0001,t+duration);
+ o.connect(g);g.connect(audioCtx.destination);o.start(t);o.stop(t+duration+0.02);
+ }catch(e){console.warn("Audio unavailable",e)}
+}
+function sound(kind){
+ if(kind==="step")tone(165,.07,"triangle",.045);
+ if(kind==="key"){tone(660,.12);tone(990,.18,"sine",.07,.11)}
+ if(kind==="correct"){tone(520,.13);tone(780,.2,"sine",.09,.13)}
+ if(kind==="wrong"){tone(220,.18,"sawtooth",.06);tone(160,.24,"sawtooth",.06,.17)}
+ if(kind==="win"){[523,659,784,1046].forEach((n,i)=>tone(n,.3,"sine",.09,i*.18))}
+}
+function restart(){state={level:1,player:[1,1],steps:0,won:false,hasKey:false,showQuestion:false,score:0,message:""};render()}
+function render(){
+ $("levelTitle").textContent="🗝️ เขาวงกตด่านที่ "+state.level;
+ $("levelValue").textContent=state.level+" / 3";
+ $("scoreValue").textContent=state.score+" / 30";
+ $("stepsValue").textContent=state.steps;
+ $("keyValue").textContent=state.hasKey?"Collected":"Not Found";
+ $("questText").textContent=state.hasKey?"✅ เก็บกุญแจสำเร็จ! ไปยังประตูทางออก 🏁":"🔑 ค้นหากุญแจเวทมนตร์เพื่อปลดล็อกทางออก";
+ $("message").textContent=state.message;
+ const maze=mazes[state.level],root=$("maze");root.replaceChildren();
+ maze.forEach((row,r)=>row.forEach((cell,c)=>{
+ const div=document.createElement("div");let cls="path",symbol="";
+ if(cell===1)cls="wall";
+ if(cell===2){cls="exit";symbol="🏁"}
+ if(cell===3&&!state.hasKey){cls="key";symbol="🔑"}
+ if(state.player[0]===r&&state.player[1]===c){cls="player";symbol="🧑"}
+ div.className="cell "+cls;div.textContent=symbol;root.appendChild(div);
+ }));
+ $("quizBox").classList.toggle("hidden",!state.showQuestion);
+ $("winScreen").classList.toggle("hidden",!state.won);
+ if(state.showQuestion){
+ const q=questions[state.level-1];$("questionText").textContent=q.question;
+ $("quizChoices").replaceChildren();
+ Object.entries(q.choices).forEach(([letter,choice])=>{
+ const btn=document.createElement("button");btn.type="button";btn.textContent=letter+". "+choice;
+ btn.addEventListener("click",()=>answer(letter));$("quizChoices").appendChild(btn);
+ });
+ }
+ if(state.won){$("finalScore").textContent="⭐ คะแนนรวม: "+state.score+" / 30";$("finalSteps").textContent="👣 จำนวนก้าวทั้งหมด: "+state.steps+" ก้าว"}
+}
+function move(direction){
+ if(state.won||state.showQuestion)return;
+ const vectors={up:[-1,0],down:[1,0],left:[0,-1],right:[0,1]},v=vectors[direction];
+ if(!v)return;
+ const nr=state.player[0]+v[0],nc=state.player[1]+v[1],cell=mazes[state.level]?.[nr]?.[nc];
+ if(cell===undefined||cell===1)return;
+ if(cell===2){
+ if(state.hasKey){state.showQuestion=true;state.message="";render()}
+ else{state.message="🔒 ต้องเก็บกุญแจก่อนเปิดประตู";render()}
+ return;
+ }
+ state.player=[nr,nc];state.steps++;sound("step");
+ if(cell===3&&!state.hasKey){state.hasKey=true;sound("key")}
+ state.message="";render();
+}
+function answer(letter){
+ if(!state.showQuestion||state.won)return;
+ if(letter!==questions[state.level-1].answer){state.message="❌ ตอบผิด ลองตอบอีกครั้ง";sound("wrong");render();return}
+ state.score+=10;state.showQuestion=false;sound("correct");
+ if(state.level<3){state.level++;state.player=[1,1];state.hasKey=false;state.message="🎉 ผ่านด่านแล้ว! เข้าสู่ด่านที่ "+state.level}
+ else{state.won=true;state.message="🏆 MISSION COMPLETE! คุณพิชิตครบ 3 ด่านแล้ว";setTimeout(()=>sound("win"),350)}
+ render();
+}
+const keys={ArrowUp:"up",ArrowDown:"down",ArrowLeft:"left",ArrowRight:"right",w:"up",a:"left",s:"down",d:"right"};
+document.addEventListener("keydown",e=>{
+ const key=e.key.length===1?e.key.toLowerCase():e.key;
+ if(keys[key]){e.preventDefault();if(!e.repeat)move(keys[key])}
+});
+$("restartButton").addEventListener("click",restart);
+restart();
+</script>
+</body>
+</html>
